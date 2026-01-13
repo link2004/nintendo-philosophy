@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nintendo Legends</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafafa;
+            --card-bg: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-tertiary: #9a9a9a;
+            --border: rgba(0,0,0,0.06);
+            --accent: #ff3b30;
+            --radius: 28px;
+            --shadow: 0 2px 40px rgba(0,0,0,0.04);
+            --shadow-hover: 0 12px 60px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .header {
+            padding: 100px 24px 80px;
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px 160px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .section-icon {
+            font-size: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        /* Card - Squircle (continuous corners) */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 48px 32px 40px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card:active {
+            transform: scale(0.97);
+            transition: transform 0.1s;
+        }
+
+        /* Card Icon */
+        .card-icon {
+            width: 140px;
+            height: 140px;
+            margin-bottom: 32px;
+            image-rendering: pixelated;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: drop-shadow(0 16px 32px rgba(0,0,0,0.12));
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) translateY(-4px);
+        }
+
+        .card-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+        }
+
+        .card-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Profile Card */
+        .card.profile-card .card-icon {
+            width: 160px;
+            height: 160px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0 auto 60px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: var(--shadow);
+        }
+
+        .back-button:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateX(-6px);
+        }
+
+        .back-button.visible {
+            display: inline-flex;
+        }
+
+        /* Article View */
+        #article-view {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        #article-view.visible {
+            display: block;
+        }
+
+        #list-view.hidden {
+            display: none;
+        }
+
+        .article {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 20px 24px 160px;
+        }
+
+        .article h1 {
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 56px;
+            color: var(--text-primary);
+        }
+
+        .article h2 {
+            font-size: 26px;
+            font-weight: 600;
+            margin: 64px 0 24px;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .article h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 48px 0 16px;
+            color: var(--text-primary);
+        }
+
+        .article p {
+            font-size: 18px;
+            line-height: 1.9;
+            margin-bottom: 28px;
+            color: var(--text-secondary);
+        }
+
+        .article ul, .article ol {
+            margin: 28px 0 36px 24px;
+            line-height: 1.9;
+        }
+
+        .article li {
+            margin-bottom: 14px;
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .article blockquote {
+            border-left: 3px solid var(--text-primary);
+            padding: 28px 36px;
+            margin: 48px 0;
+            background: rgba(0,0,0,0.02);
+            border-radius: 0 20px 20px 0;
+        }
+
+        .article blockquote p {
+            font-size: 18px;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 0;
+            line-height: 1.7;
+        }
+
+        .article a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .article a:hover {
+            opacity: 0.7;
+        }
+
+        .article strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .article table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 36px 0;
+            font-size: 14px;
+        }
+
+        .article th, .article td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .article th {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 100px;
+            color: var(--text-tertiary);
+            font-size: 14px;
+            letter-spacing: 0.05em;
+        }
+
+        /* References - small and subtle */
+        .article .references {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 80px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+        .article .references h3 {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 24px 0 12px;
+            color: var(--text-tertiary);
+        }
+        .article .references ul {
+            margin: 0 0 16px 16px;
+        }
+        .article .references li {
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+        .article .references a {
+            color: var(--text-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 80px 20px 60px;
+            }
+            .header p {
+                font-size: 28px;
+            }
+            .container {
+                padding: 0 20px 100px;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .card {
+                padding: 36px 24px 32px;
+            }
+            .card-icon {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 24px;
+            }
+            .article h1 {
+                font-size: 28px;
+                margin-bottom: 40px;
+            }
+            .section {
+                margin-bottom: 72px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            opacity: 0;
+            animation: fadeIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+        .card:nth-child(6) { animation-delay: 0.3s; }
+        .card:nth-child(7) { animation-delay: 0.35s; }
+        .card:nth-child(8) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Nintendo Legends</h1>
+        <p>任天堂を作った<br>伝説の人々と哲学</p>
+    </header>
+
+    <div class="container">
+        <button class="back-button" id="backBtn" onclick="showList()">
+            <span>←</span> Back
+        </button>
+
+        <div id="list-view"></div>
+
+        <div id="article-view">
+            <article class="article" id="article-content"></article>
+        </div>
+    </div>
+
+    <script>
+        const people = {
+            "岩田聡": {
+                icon: "🎮",
+                profile: "岩田聡/岩田聡.md",
+                episodes: [
+                    "岩田聡/エピソード/MOTHER2救済伝説.md",
+                    "岩田聡/エピソード/ポケモン金銀を救った圧縮ツール.md",
+                    "岩田聡/エピソード/スマブラDX最後のプログラマー仕事.md",
+                    "岩田聡/エピソード/高校時代HP社を驚かせた天才少年.md",
+                    "岩田聡/エピソード/社員をリストラしない経営哲学.md"
+                ]
+            },
+            "宮本茂": {
+                icon: "🍄",
+                profile: "宮本茂/宮本茂.md",
+                episodes: [
+                    "宮本茂/エピソード/ドンキーコング誕生秘話_ポパイからマリオへ.md",
+                    "宮本茂/エピソード/ちゃぶ台返し.md",
+                    "宮本茂/エピソード/幼少期の洞窟探検とゼルダの伝説.md",
+                    "宮本茂/エピソード/ゴールデンアイ007と病院での握手.md",
+                    "宮本茂/エピソード/ポール・マッカートニーにサインを求められた男.md"
+                ]
+            },
+            "桜井政博": {
+                icon: "⭐",
+                profile: "桜井政博/桜井政博.md",
+                episodes: [
+                    "桜井政博/エピソード/19歳でカービィを企画した天才新人.md",
+                    "桜井政博/エピソード/スマブラ拳で悪評を払拭した自らの宣伝活動.md",
+                    "桜井政博/エピソード/岩田聡との運命的な出会いとスマブラ誕生.md",
+                    "桜井政博/エピソード/カービィはピンクなのに白と勘違いされた話.md",
+                    "桜井政博/エピソード/9000万円自腹のYouTubeチャンネル.md"
+                ]
+            }
+        };
+
+        const philosophies = [
+            { title: "枯れた技術の水平思考", path: "哲学/01_枯れた技術の水平思考.md", author: "横井軍平" },
+            { title: "独創の精神", path: "哲学/02_独創の精神.md", author: "任天堂DNA" },
+            { title: "ゲーム人口の拡大", path: "哲学/03_ゲーム人口の拡大.md", author: "岩田聡" },
+            { title: "驚きを与える任天堂らしさ", path: "哲学/04_驚きを与える任天堂らしさ.md", author: "任天堂" },
+            { title: "娯楽に徹せよ", path: "哲学/05_娯楽に徹せよ.md", author: "山内溥" },
+            { title: "遅れて出た良いゲームは永遠に良い", path: "哲学/01_遅れて出た良いゲームは永遠に良い.md", author: "宮本茂" },
+            { title: "ちゃぶ台返し文化", path: "哲学/02_ちゃぶ台返し文化.md", author: "宮本茂" },
+            { title: "説明書を読まなくても遊べるゲーム", path: "哲学/03_説明書を読まなくても遊べるゲーム.md", author: "桜井政博" },
+            { title: "負けた側がもう一回やりたいと思えるゲーム", path: "哲学/04_負けた側がもう一回やりたいと思えるゲーム.md", author: "桜井政博" },
+            { title: "お客様は神様ではなく家族", path: "哲学/05_お客様は神様ではなく家族.md", author: "岩田聡" },
+            { title: "社員をリストラしない経営哲学", path: "哲学/01_社員をリストラしない経営哲学.md", author: "岩田聡" },
+            { title: "失敗を恐れない文化", path: "哲学/02_失敗を恐れない文化.md", author: "任天堂" },
+            { title: "1人のカリスマより100人のチーム", path: "哲学/03_1人のカリスマより100人のチーム.md", author: "任天堂" },
+            { title: "異業種からの発想", path: "哲学/04_異業種からの発想.md", author: "横井軍平" },
+            { title: "プラットフォームとソフトの両輪", path: "哲学/05_プラットフォームとソフトの両輪.md", author: "任天堂" }
+        ];
+
+        const icons = {
+            "岩田聡": "images/person_icons/iwata_profile.png",
+            "MOTHER2救済伝説": "images/person_icons/iwata_mother2.png",
+            "ポケモン金銀を救った圧縮ツール": "images/person_icons/iwata_pokemon.png",
+            "スマブラDX最後のプログラマー仕事": "images/person_icons/iwata_smash.png",
+            "高校時代HP社を驚かせた天才少年": "images/person_icons/iwata_hp.png",
+            "社員をリストラしない経営哲学_ep": "images/person_icons/iwata_handshake.png",
+            "宮本茂": "images/person_icons/miyamoto_profile.png",
+            "ドンキーコング誕生秘話 ポパイからマリオへ": "images/person_icons/miyamoto_dk.png",
+            "ちゃぶ台返し": "images/person_icons/miyamoto_chabudai.png",
+            "幼少期の洞窟探検とゼルダの伝説": "images/person_icons/miyamoto_cave.png",
+            "ゴールデンアイ007と病院での握手": "images/person_icons/miyamoto_goldeneye.png",
+            "ポール・マッカートニーにサインを求められた男": "images/person_icons/miyamoto_zelda.png",
+            "桜井政博": "images/person_icons/sakurai_profile.png",
+            "19歳でカービィを企画した天才新人": "images/person_icons/sakurai_kirby.png",
+            "スマブラ拳で悪評を払拭した自らの宣伝活動": "images/person_icons/sakurai_smash.png",
+            "岩田聡との運命的な出会いとスマブラ誕生": "images/person_icons/sakurai_talk.png",
+            "カービィはピンクなのに白と勘違いされた話": "images/person_icons/sakurai_profile.png",
+            "9000万円自腹のYouTubeチャンネル": "images/person_icons/sakurai_youtube.png",
+            "枯れた技術の水平思考": "images/icons/handheld.png",
+            "独創の精神": "images/icons/lightbulb.png",
+            "ゲーム人口の拡大": "images/icons/heart.png",
+            "驚きを与える任天堂らしさ": "images/icons/sparkle.png",
+            "娯楽に徹せよ": "images/icons/flower.png",
+            "遅れて出た良いゲームは永遠に良い": "images/icons/book.png",
+            "ちゃぶ台返し文化": "images/icons/box.png",
+            "説明書を読まなくても遊べるゲーム": "images/icons/tablet.png",
+            "負けた側がもう一回やりたいと思えるゲーム": "images/icons/circle.png",
+            "お客様は神様ではなく家族": "images/icons/heart.png",
+            "社員をリストラしない経営哲学": "images/icons/cap.png",
+            "失敗を恐れない文化": "images/icons/balloon.png",
+            "1人のカリスマより100人のチーム": "images/icons/remote.png",
+            "異業種からの発想": "images/icons/triangle.png",
+            "プラットフォームとソフトの両輪": "images/icons/controller.png",
+            "default": "images/icons/star.png"
+        };
+
+        function getFileName(path) {
+            return path.split('/').pop().replace('.md', '').replace(/_/g, ' ');
+        }
+
+        function getIcon(title) {
+            return icons[title] || icons["default"];
+        }
+
+        function buildListView() {
+            const listView = document.getElementById('list-view');
+
+            // Philosophy
+            const philSection = document.createElement('section');
+            philSection.className = 'section';
+            philSection.innerHTML = `
+                <div class="section-header">
+                    <span class="section-icon">📜</span>
+                    <span class="section-title">Philosophy</span>
+                </div>
+                <div class="card-grid"></div>
+            `;
+            const philGrid = philSection.querySelector('.card-grid');
+
+            philosophies.forEach(phil => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img class="card-icon" src="${getIcon(phil.title)}" alt="">
+                    <span class="card-label">Philosophy</span>
+                    <div class="card-title">${phil.title}</div>
+                    <div class="card-subtitle">${phil.author}</div>
+                `;
+                card.onclick = () => showArticle(phil.path);
+                philGrid.appendChild(card);
+            });
+
+            listView.appendChild(philSection);
+
+            // People
+            for (const [name, data] of Object.entries(people)) {
+                const section = document.createElement('section');
+                section.className = 'section';
+                section.innerHTML = `
+                    <div class="section-header">
+                        <span class="section-icon">${data.icon}</span>
+                        <span class="section-title">${name}</span>
+                    </div>
+                    <div class="card-grid"></div>
+                `;
+                const grid = section.querySelector('.card-grid');
+
+                const profileCard = document.createElement('div');
+                profileCard.className = 'card profile-card';
+                profileCard.innerHTML = `
+                    <img class="card-icon" src="${getIcon(name)}" alt="">
+                    <span class="card-label">Profile</span>
+                    <div class="card-title">${name}</div>
+                `;
+                profileCard.onclick = () => showArticle(data.profile);
+                grid.appendChild(profileCard);
+
+                data.episodes.forEach(ep => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    const epTitle = getFileName(ep);
+                    card.innerHTML = `
+                        <img class="card-icon" src="${getIcon(epTitle)}" alt="">
+                        <span class="card-label">Episode</span>
+                        <div class="card-title">${epTitle}</div>
+                    `;
+                    card.onclick = () => showArticle(ep);
+                    grid.appendChild(card);
+                });
+
+                listView.appendChild(section);
+            }
+        }
+
+        async function showArticle(path) {
+            const listView = document.getElementById('list-view');
+            const articleView = document.getElementById('article-view');
+            const content = document.getElementById('article-content');
+            const backBtn = document.getElementById('backBtn');
+
+            listView.classList.add('hidden');
+            articleView.classList.add('visible');
+            backBtn.classList.add('visible');
+
+            content.innerHTML = '<div class="loading">Loading...</div>';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            try {
+                const response = await fetch(path);
+                if (!response.ok) throw new Error();
+                const text = await response.text();
+                content.innerHTML = marked.parse(text);
+            } catch (e) {
+                content.innerHTML = '<div class="loading">Could not load</div>';
+            }
+
+            history.pushState({ path }, '', `#${encodeURIComponent(path)}`);
+        }
+
+        function showList() {
+            document.getElementById('list-view').classList.remove('hidden');
+            document.getElementById('article-view').classList.remove('visible');
+            document.getElementById('backBtn').classList.remove('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            history.pushState(null, '', window.location.pathname);
+        }
+
+        window.onpopstate = e => e.state?.path ? showArticle(e.state.path) : showList();
+
+        buildListView();
+        if (window.location.hash) showArticle(decodeURIComponent(window.location.hash.slice(1)));
+    </script>
+</body>
+</html>
