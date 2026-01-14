@@ -15,7 +15,7 @@
   <!-- 6 icons in 3x2 grid -->
   <!-- Icon size: 240x240, Gap: 40 -->
   <!-- Row 1 -->
-  <image xlink:href="icons/cap.png" x="200" y="55" width="240" height="240"/>
+  <image xlink:href="person_icons/miyamoto_profile.png" x="200" y="55" width="240" height="240"/>
   <image xlink:href="icons/star.png" x="480" y="55" width="240" height="240"/>
   <image xlink:href="icons/lightbulb.png" x="760" y="55" width="240" height="240"/>
 
