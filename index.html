@@ -55,6 +55,7 @@
 
         /* Header */
         .header {
+            position: relative;
             padding: 80px 24px 60px;
             text-align: center;
             max-width: 680px;
@@ -629,9 +630,9 @@
 
         /* Theme toggle */
         .theme-toggle {
-            position: fixed;
-            top: max(20px, var(--safe-top));
-            right: max(20px, var(--safe-right));
+            position: absolute;
+            top: 0;
+            right: 0;
             width: 40px;
             height: 40px;
             background: var(--card-bg);
@@ -641,12 +642,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 100;
+            z-index: 10;
             box-shadow: 0 2px 12px rgba(0,0,0,0.06);
             touch-action: manipulation;
             transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
         }
 
         .theme-toggle svg {
@@ -677,21 +676,24 @@
         }
 
         html.dark .back-button,
-        html.dark .scroll-top,
+        html.dark .scroll-top {
+            background: rgba(40,40,40,0.95);
+        }
+
         html.dark .theme-toggle {
             background: rgba(40,40,40,0.95);
+        }
+
+        /* Back button hide on scroll down */
+        .back-button.hidden-scroll {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>Nintendo Legends</h1>
-        <p>任天堂を作った<br>伝説の人々と哲学</p>
-    </header>
-
-    <div class="container">
-        <button class="back-button" id="backBtn" onclick="showList()" aria-label="戻る">←</button>
-
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="テーマ切替">
             <svg id="sunIcon" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="5"></circle>
@@ -708,6 +710,12 @@
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
         </button>
+        <h1>Nintendo Legends</h1>
+        <p>任天堂を作った<br>伝説の人々と哲学</p>
+    </header>
+
+    <div class="container">
+        <button class="back-button" id="backBtn" onclick="showList()" aria-label="戻る">←</button>
 
         <div id="list-view"></div>
 
@@ -968,18 +976,34 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Scroll to top button visibility
+        // Scroll handling - back button and scroll-to-top
+        let lastScrollY = 0;
         let scrollTimeout;
         window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            const backBtn = document.getElementById('backBtn');
+            const scrollTopBtn = document.getElementById('scrollTop');
+
+            // Back button: hide on scroll down, show on scroll up
+            if (backBtn.classList.contains('visible')) {
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    backBtn.classList.add('hidden-scroll');
+                } else {
+                    backBtn.classList.remove('hidden-scroll');
+                }
+            }
+
+            // Scroll to top button
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
-                const scrollTop = document.getElementById('scrollTop');
-                if (window.scrollY > 400) {
-                    scrollTop.classList.add('visible');
+                if (currentScrollY > 400) {
+                    scrollTopBtn.classList.add('visible');
                 } else {
-                    scrollTop.classList.remove('visible');
+                    scrollTopBtn.classList.remove('visible');
                 }
             }, 100);
+
+            lastScrollY = currentScrollY;
         }, { passive: true });
 
         // Swipe back gesture
