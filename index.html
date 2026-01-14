@@ -844,7 +844,7 @@
             "幼少期の洞窟探検とゼルダの伝説": "images/person_icons/miyamoto_cave.png",
             "ゴールデンアイ007と病院での握手": "images/person_icons/miyamoto_goldeneye.png",
             "ポール・マッカートニーにサインを求められた男": "images/person_icons/miyamoto_zelda.png",
-            "桜井政博": "images/person_icons/sakurai_profile.png",
+            "桜井政博": "images/icons/star.png",
             "19歳でカービィを企画した天才新人": "images/person_icons/sakurai_kirby.png",
             "スマブラ拳で悪評を払拭した自らの宣伝活動": "images/person_icons/sakurai_smash.png",
             "岩田聡との運命的な出会いとスマブラ誕生": "images/person_icons/sakurai_talk.png",
@@ -869,7 +869,7 @@
         };
 
         function getFileName(path) {
-            return path.split('/').pop().replace('.md', '').replace(/_/g, ' ');
+            return path.split('/').pop().replace('.md', '').replace(/_/g, ' ').replace(/^\d+\s+/, '');
         }
 
         function getIcon(title) {
