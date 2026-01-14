@@ -13,14 +13,14 @@
   <rect width="1200" height="630" fill="url(#dots)"/>
 
   <!-- 6 icons in 3x2 grid -->
-  <!-- Icon size: 180x180, Gap: 100 (uniform), Margin: 230 horizontal, 85 vertical -->
+  <!-- Icon size: 240x240, Gap: 40 -->
   <!-- Row 1 -->
-  <image xlink:href="icons/controller.png" x="230" y="85" width="180" height="180"/>
-  <image xlink:href="icons/star.png" x="510" y="85" width="180" height="180"/>
-  <image xlink:href="icons/lightbulb.png" x="790" y="85" width="180" height="180"/>
+  <image xlink:href="icons/controller.png" x="200" y="55" width="240" height="240"/>
+  <image xlink:href="icons/star.png" x="480" y="55" width="240" height="240"/>
+  <image xlink:href="icons/lightbulb.png" x="760" y="55" width="240" height="240"/>
 
   <!-- Row 2 -->
-  <image xlink:href="icons/heart.png" x="230" y="365" width="180" height="180"/>
-  <image xlink:href="icons/handheld.png" x="510" y="365" width="180" height="180"/>
-  <image xlink:href="icons/book.png" x="790" y="365" width="180" height="180"/>
+  <image xlink:href="icons/heart.png" x="200" y="335" width="240" height="240"/>
+  <image xlink:href="icons/handheld.png" x="480" y="335" width="240" height="240"/>
+  <image xlink:href="icons/book.png" x="760" y="335" width="240" height="240"/>
 </svg>
