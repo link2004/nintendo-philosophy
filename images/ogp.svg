@@ -1,23 +1,25 @@
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-    <!-- Dot pattern -->
     <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
       <circle cx="12" cy="12" r="2" fill="rgba(0,0,0,0.1)"/>
     </pattern>
+    <style>
+      image { image-rendering: pixelated; image-rendering: crisp-edges; }
+    </style>
   </defs>
 
   <!-- Background -->
   <rect width="1200" height="630" fill="#fafafa"/>
   <rect width="1200" height="630" fill="url(#dots)"/>
 
-  <!-- 6 icons in 3x2 grid -->
-  <!-- Row 1 -->
-  <image xlink:href="icons/controller.png" x="150" y="140" width="160" height="160"/>
-  <image xlink:href="icons/star.png" x="520" y="140" width="160" height="160"/>
-  <image xlink:href="icons/lightbulb.png" x="890" y="140" width="160" height="160"/>
+  <!-- 6 icons in 3x2 grid - evenly spaced -->
+  <!-- Row 1: y=115, Row 2: y=355 -->
+  <!-- Columns: x=100, x=500, x=900 (spacing=400, margin=100) -->
+  <image xlink:href="icons/controller.png" x="100" y="115" width="200" height="200"/>
+  <image xlink:href="icons/star.png" x="500" y="115" width="200" height="200"/>
+  <image xlink:href="icons/lightbulb.png" x="900" y="115" width="200" height="200"/>
 
-  <!-- Row 2 -->
-  <image xlink:href="icons/heart.png" x="150" y="330" width="160" height="160"/>
-  <image xlink:href="icons/mushroom.png" x="520" y="330" width="160" height="160"/>
-  <image xlink:href="icons/handheld.png" x="890" y="330" width="160" height="160"/>
+  <image xlink:href="icons/heart.png" x="100" y="315" width="200" height="200"/>
+  <image xlink:href="icons/mushroom.png" x="500" y="315" width="200" height="200"/>
+  <image xlink:href="icons/handheld.png" x="900" y="315" width="200" height="200"/>
 </svg>
