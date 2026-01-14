@@ -215,28 +215,33 @@
         .back-button {
             position: fixed;
             top: max(20px, var(--safe-top));
-            left: max(20px, var(--safe-left));
+            left: max(14px, var(--safe-left));
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             background: var(--card-bg);
-            color: var(--text-primary);
             border: 1px solid var(--border);
-            border-radius: 50%;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 20px;
-            font-weight: 400;
             transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
             opacity: 0;
             transform: scale(0.8);
             pointer-events: none;
             touch-action: manipulation;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-primary);
+            stroke-width: 2.5;
+            fill: none;
         }
 
         .back-button:active {
@@ -525,12 +530,6 @@
             .section {
                 margin-bottom: 48px;
             }
-
-            .back-button {
-                width: 44px;
-                height: 44px;
-                font-size: 18px;
-            }
         }
 
         /* Small phones */
@@ -720,7 +719,11 @@
     </header>
 
     <div class="container">
-        <button class="back-button" id="backBtn" onclick="showList()" aria-label="戻る">←</button>
+        <button class="back-button" id="backBtn" onclick="showList()" aria-label="戻る">
+            <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
 
         <div id="list-view"></div>
 
