@@ -189,6 +189,21 @@
             opacity: 1;
         }
 
+        /* Read/Clear badge */
+        .card.read::before {
+            content: '★ CLEAR';
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #34c759;
+            background: rgba(52, 199, 89, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
         /* Card Icon */
         .card-icon {
             width: 100px;
@@ -894,7 +909,8 @@
 
             philosophies.forEach(phil => {
                 const card = document.createElement('div');
-                card.className = 'card';
+                card.className = 'card' + (isArticleRead(phil.path) ? ' read' : '');
+                card.dataset.path = phil.path;
                 card.innerHTML = `
                     <img class="card-icon" src="${getIcon(phil.title)}" alt="" loading="lazy">
                     <span class="card-label">Philosophy</span>
@@ -922,7 +938,8 @@
                 const grid = section.querySelector('.card-grid');
 
                 const profileCard = document.createElement('div');
-                profileCard.className = 'card profile-card';
+                profileCard.className = 'card profile-card' + (isArticleRead(data.profile) ? ' read' : '');
+                profileCard.dataset.path = data.profile;
                 profileCard.innerHTML = `
                     <img class="card-icon" src="${getIcon(name)}" alt="" loading="lazy">
                     <span class="card-label">Profile</span>
@@ -934,7 +951,8 @@
 
                 data.episodes.forEach(ep => {
                     const card = document.createElement('div');
-                    card.className = 'card';
+                    card.className = 'card' + (isArticleRead(ep) ? ' read' : '');
+                    card.dataset.path = ep;
                     const epTitle = getFileName(ep);
                     card.innerHTML = `
                         <img class="card-icon" src="${getIcon(epTitle)}" alt="" loading="lazy">
@@ -995,6 +1013,8 @@
                     </div>
                     ${articleHtml}
                 `;
+                // 読了として記録
+                markAsRead(path);
             } catch (e) {
                 content.innerHTML = '<div class="loading"><p style="color: var(--text-tertiary);">読み込めませんでした</p></div>';
             }
@@ -1008,6 +1028,8 @@
             document.getElementById('backBtn').classList.remove('visible');
             window.scrollTo({ top: 0, behavior: 'instant' });
             history.pushState(null, '', window.location.pathname);
+            // カードの読了状態を更新
+            updateCardReadStatus();
         }
 
         function scrollToTop() {
@@ -1069,6 +1091,39 @@
         }, { passive: true });
 
         window.onpopstate = e => e.state?.path ? showArticle(e.state.path) : showList();
+
+        // Read articles management
+        const READ_STORAGE_KEY = 'nintendo-legends-read';
+
+        function getReadArticles() {
+            try {
+                return JSON.parse(localStorage.getItem(READ_STORAGE_KEY) || '[]');
+            } catch {
+                return [];
+            }
+        }
+
+        function isArticleRead(path) {
+            return getReadArticles().includes(path);
+        }
+
+        function markAsRead(path) {
+            const read = getReadArticles();
+            if (!read.includes(path)) {
+                read.push(path);
+                localStorage.setItem(READ_STORAGE_KEY, JSON.stringify(read));
+            }
+        }
+
+        function updateCardReadStatus() {
+            const cards = document.querySelectorAll('.card[data-path]');
+            const read = getReadArticles();
+            cards.forEach(card => {
+                if (read.includes(card.dataset.path)) {
+                    card.classList.add('read');
+                }
+            });
+        }
 
         // Theme toggle
         function toggleTheme() {
