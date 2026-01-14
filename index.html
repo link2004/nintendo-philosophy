@@ -959,10 +959,17 @@
             window.scrollTo({ top: 0, behavior: 'instant' });
 
             try {
-                const response = await fetch(path);
-                if (!response.ok) throw new Error();
-                const text = await response.text();
-                const articleHtml = marked.parse(text);
+                let articleHtml;
+                // 事前ビルドされたデータがあればそれを使用（高速）
+                if (window.__ARTICLES__ && window.__ARTICLES__[path]) {
+                    articleHtml = window.__ARTICLES__[path];
+                } else {
+                    // フォールバック: fetchで取得
+                    const response = await fetch(path);
+                    if (!response.ok) throw new Error();
+                    const text = await response.text();
+                    articleHtml = marked.parse(text);
+                }
                 content.innerHTML = `
                     <div class="article-hero">
                         <img src="${iconSrc}" alt="" class="article-hero-icon">
