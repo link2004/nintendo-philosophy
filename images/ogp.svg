@@ -12,14 +12,23 @@
   <rect width="1200" height="630" fill="#fafafa"/>
   <rect width="1200" height="630" fill="url(#dots)"/>
 
+  <!-- Top-left colorful waves -->
+  <path d="M0,80 Q30,60 60,80 T120,80 T180,80 T240,80" stroke="#ff3b30" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M0,60 Q30,40 60,60 T120,60 T180,60 T240,60" stroke="#ff9500" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M0,40 Q30,20 60,40 T120,40 T180,40 T240,40" stroke="#ffcc00" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M0,20 Q30,0 60,20 T120,20 T180,20" stroke="#34c759" stroke-width="4" fill="none" opacity="0.7"/>
+
+  <!-- Bottom-right colorful waves -->
+  <path d="M960,550 Q990,570 1020,550 T1080,550 T1140,550 T1200,550" stroke="#007aff" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M960,570 Q990,590 1020,570 T1080,570 T1140,570 T1200,570" stroke="#5856d6" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M960,590 Q990,610 1020,590 T1080,590 T1140,590 T1200,590" stroke="#af52de" stroke-width="4" fill="none" opacity="0.7"/>
+  <path d="M1020,610 Q1050,630 1080,610 T1140,610 T1200,610" stroke="#ff2d55" stroke-width="4" fill="none" opacity="0.7"/>
+
   <!-- 6 icons in 3x2 grid -->
-  <!-- Icon size: 240x240, Gap: 40 -->
-  <!-- Row 1 -->
   <image xlink:href="person_icons/miyamoto_profile.png" x="200" y="55" width="240" height="240"/>
   <image xlink:href="icons/star.png" x="480" y="55" width="240" height="240"/>
   <image xlink:href="icons/lightbulb.png" x="760" y="55" width="240" height="240"/>
 
-  <!-- Row 2 -->
   <image xlink:href="icons/heart.png" x="200" y="335" width="240" height="240"/>
   <image xlink:href="icons/handheld.png" x="480" y="335" width="240" height="240"/>
   <image xlink:href="icons/book.png" x="760" y="335" width="240" height="240"/>
