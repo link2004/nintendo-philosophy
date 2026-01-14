@@ -382,6 +382,13 @@
             border-radius: 8px;
         }
 
+        .skeleton-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 32px;
+            border-radius: 20px;
+        }
+
         .skeleton-title {
             height: 32px;
             width: 80%;
@@ -393,10 +400,30 @@
             margin-bottom: 16px;
         }
 
-        .skeleton-line:nth-child(2) { width: 100%; }
-        .skeleton-line:nth-child(3) { width: 95%; }
-        .skeleton-line:nth-child(4) { width: 90%; }
-        .skeleton-line:nth-child(5) { width: 85%; }
+        .skeleton-line:nth-child(3) { width: 100%; }
+        .skeleton-line:nth-child(4) { width: 95%; }
+        .skeleton-line:nth-child(5) { width: 90%; }
+        .skeleton-line:nth-child(6) { width: 85%; }
+
+        /* Article Hero */
+        .article-hero {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .article-hero-icon {
+            width: 120px;
+            height: 120px;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 16px 32px rgba(0,0,0,0.12));
+            animation: heroFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
 
         @keyframes shimmer {
             0% { background-position: 200% 0; }
@@ -894,11 +921,15 @@
             articleView.classList.add('visible');
             backBtn.classList.add('visible');
 
+            // Get icon for this article
+            const title = getFileName(path);
+            const iconSrc = getIcon(title);
+
             // Skeleton loading
             content.innerHTML = `
                 <div class="loading">
+                    <div class="skeleton skeleton-icon"></div>
                     <div class="skeleton skeleton-title"></div>
-                    <div class="skeleton skeleton-line"></div>
                     <div class="skeleton skeleton-line"></div>
                     <div class="skeleton skeleton-line"></div>
                     <div class="skeleton skeleton-line"></div>
@@ -911,7 +942,13 @@
                 const response = await fetch(path);
                 if (!response.ok) throw new Error();
                 const text = await response.text();
-                content.innerHTML = marked.parse(text);
+                const articleHtml = marked.parse(text);
+                content.innerHTML = `
+                    <div class="article-hero">
+                        <img src="${iconSrc}" alt="" class="article-hero-icon">
+                    </div>
+                    ${articleHtml}
+                `;
             } catch (e) {
                 content.innerHTML = '<div class="loading"><p style="color: var(--text-tertiary);">読み込めませんでした</p></div>';
             }
