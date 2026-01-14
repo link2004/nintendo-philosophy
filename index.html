@@ -25,6 +25,7 @@
             --text-secondary: #6b6b6b;
             --text-tertiary: #9a9a9a;
             --border: rgba(0,0,0,0.06);
+            --dot-color: rgba(0,0,0,0.06);
             --accent: #ff3b30;
             --radius: 24px;
             --shadow: 0 2px 40px rgba(0,0,0,0.04);
@@ -43,6 +44,8 @@
         body {
             font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
+            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background-size: 20px 20px;
             color: var(--text-primary);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -677,6 +680,7 @@
             --text-secondary: #a0a0a0;
             --text-tertiary: #666666;
             --border: rgba(255,255,255,0.08);
+            --dot-color: rgba(255,255,255,0.06);
         }
 
         html.dark .back-button,
