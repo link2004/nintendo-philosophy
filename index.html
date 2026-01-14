@@ -726,6 +726,30 @@
             background: rgba(40,40,40,0.95);
         }
 
+        /* Reset button */
+        .reset-button {
+            display: block;
+            margin: 60px auto 20px;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reset-button:hover {
+            color: var(--text-secondary);
+            border-color: var(--text-tertiary);
+        }
+
+        .reset-button:active {
+            transform: scale(0.95);
+        }
+
         /* Back button hide on scroll down */
         .back-button.hidden-scroll {
             opacity: 0;
@@ -764,6 +788,7 @@
         </button>
 
         <div id="list-view"></div>
+        <button class="reset-button" id="resetBtn" onclick="resetProgress()">ゲームリセット</button>
 
         <div id="article-view">
             <article class="article" id="article-content"></article>
@@ -973,8 +998,10 @@
             const articleView = document.getElementById('article-view');
             const content = document.getElementById('article-content');
             const backBtn = document.getElementById('backBtn');
+            const resetBtn = document.getElementById('resetBtn');
 
             listView.classList.add('hidden');
+            resetBtn.style.display = 'none';
             articleView.classList.add('visible');
             backBtn.classList.add('visible');
 
@@ -1024,6 +1051,7 @@
 
         function showList() {
             document.getElementById('list-view').classList.remove('hidden');
+            document.getElementById('resetBtn').style.display = 'block';
             document.getElementById('article-view').classList.remove('visible');
             document.getElementById('backBtn').classList.remove('visible');
             window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1121,8 +1149,17 @@
             cards.forEach(card => {
                 if (read.includes(card.dataset.path)) {
                     card.classList.add('read');
+                } else {
+                    card.classList.remove('read');
                 }
             });
+        }
+
+        function resetProgress() {
+            if (confirm('リセットしますか？')) {
+                localStorage.removeItem(READ_STORAGE_KEY);
+                updateCardReadStatus();
+            }
         }
 
         // Theme toggle
